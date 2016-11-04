@@ -6,27 +6,25 @@ import java.sql.SQLException;
 
 public class ConnectionProvider {
 
-	 private static Connection con = null;
+	private static Connection con = null;
+	private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
+	private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
+	private static final String USER = "PRUEBA";
+	private static final String PASS = "1234";
 
     public static Connection getConnection() {
-        if (con != null)
-            return con;
-        else {
+        if (con == null){
             try {
-                
-                String driver = "oracle.jdbc.driver.OracleDriver";
-                String url = "jdbc:oracle:thin:@localhost:1521:xe";
-                String user = "PRUEBA";
-                String password = "1234";
-                Class.forName(driver);
-                con = DriverManager.getConnection(url, user, password);
+                Class.forName(DRIVER);
+                con = DriverManager.getConnection(URL, USER, PASS);
             } catch (ClassNotFoundException cnfe) {
                 System.out.println(cnfe);
             } catch (SQLException sqe) {
                 System.out.println(sqe);
             } 
-            return con;
         }
+        
+        return con;
 
     }
 }
