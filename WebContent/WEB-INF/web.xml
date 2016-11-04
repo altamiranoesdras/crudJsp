@@ -15,11 +15,11 @@
 
 	<servlet>
 		<description></description>
-		<servlet-name>UserHandler</servlet-name>
-		<servlet-class>net.roseindia.handler.UserHandler</servlet-class>
+		<servlet-name>UserController</servlet-name>
+		<servlet-class>controllers.UserController</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>UserHandler</servlet-name>
-		<url-pattern>/UserHandler</url-pattern>
+		<servlet-name>UserController</servlet-name>
+		<url-pattern>/UserController</url-pattern>
 	</servlet-mapping>
 </web-app>

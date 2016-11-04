@@ -1,4 +1,4 @@
-package net.roseindia.handler;
+package controllers;
 
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.roseindia.dao.UserDao;
-import net.roseindia.bean.UserBean;
+import dao.UserDao;
+import models.User;
 
-public class UserHandler extends HttpServlet {    
+public class UserController extends HttpServlet {    
     
 	
 	private static String INSERT = "/user.jsp";
@@ -18,7 +18,7 @@ public class UserHandler extends HttpServlet {
     private static String UserRecord = "/listUser.jsp";
     private UserDao dao;
 
-    public UserHandler() {
+    public UserController() {
         super();
         dao = new UserDao();
     }
@@ -27,38 +27,50 @@ public class UserHandler extends HttpServlet {
         String redirect="";
         String uId = request.getParameter("userid");        
         String action = request.getParameter("action");
-        if(!((uId)== null) && action.equalsIgnoreCase("insert"))
-        {
+        
+        if(!((uId)== null) && action.equalsIgnoreCase("insert")){
+        	
         	int id = Integer.parseInt(uId);
-        	UserBean user = new UserBean();
+        	User user = new User();
+        	
         	user.setId(id);
-            user.setfName(request.getParameter("firstName"));
-            user.setlName(request.getParameter("lastName"));
+            user.setNombres(request.getParameter("firstName"));
+            user.setApellidos(request.getParameter("lastName"));
         	dao.addUser(user);
         	redirect = UserRecord;
-            request.setAttribute("users", dao.getAllUsers());    
-           	System.out.println("Record Added Successfully");
+            request.setAttribute("users", dao.getAllUsers());
+            
+           	System.out.println("Registro insertado");
         }
         else if (action.equalsIgnoreCase("delete")){
+        	
             String userId = request.getParameter("userId");
             int uid = Integer.parseInt(userId);
+            
             dao.removeUser(uid);
             redirect = UserRecord;
             request.setAttribute("users", dao.getAllUsers());
-            System.out.println("Record Deleted Successfully");
-        }else if (action.equalsIgnoreCase("editform")){        	
-        	redirect = Edit;            
+            
+            System.out.println("Registro Eliminados");
+            
+        }else if (action.equalsIgnoreCase("editform")){     
+        	
+        	redirect = Edit;
+        	
         } else if (action.equalsIgnoreCase("edit")){
+        	
         	String userId = request.getParameter("userId");
-            int uid = Integer.parseInt(userId);            
-            UserBean user = new UserBean();
+            int uid = Integer.parseInt(userId);
+            
+            User user = new User();
         	user.setId(uid);
-            user.setfName(request.getParameter("firstName"));
-            user.setlName(request.getParameter("lastName"));
+            user.setNombres(request.getParameter("firstName"));
+            user.setApellidos(request.getParameter("lastName"));
             dao.editUser(user);
             request.setAttribute("user", user);
             redirect = UserRecord;
-            System.out.println("Record updated Successfully");
+            System.out.println("Registro Actualizado");
+            
          } else if (action.equalsIgnoreCase("listUser")){
             redirect = UserRecord;
             request.setAttribute("users", dao.getAllUsers());
